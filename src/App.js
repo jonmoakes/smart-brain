@@ -8,6 +8,7 @@ import Particles from "react-particles-js";
 import Clarifai from "clarifai";
 import "./App.css";
 import Signin from "./components/Signin/Signin";
+import Register from "./components/Register/Register";
 
 const app = new Clarifai.App({
   apiKey: "b602577a85ef49cdbe6b4be98f108bce"
@@ -78,9 +79,7 @@ class App extends Component {
       <div className="App">
         <Particles className="particles" params={particlesOptions} />
         <Navigation onRouteChange={this.onRouteChange} />
-        {this.state.route === "signin" ? (
-          <Signin onRouteChange={this.onRouteChange} />
-        ) : (
+        {this.state.route === "home" ? (
           <div>
             <Logo />
             <Rank />
@@ -91,9 +90,12 @@ class App extends Component {
             <FaceRecognition
               coordinates={this.state.box}
               imageUrl={this.state.imageUrl}
-            />{" "}
-            {/* make the image url equal the state of the imageurl. Note that the image url state is takem from the input -  see onButtonSubmit comment */}
+            />
           </div>
+        ) : this.state.route === "signin" ? (
+          <Signin onRouteChange={this.onRouteChange} />
+        ) : (
+          <Register onRouteChange={this.onRouteChange} />
         )}
       </div>
     );
