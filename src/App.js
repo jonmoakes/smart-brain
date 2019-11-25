@@ -121,8 +121,8 @@ class App extends Component {
           isSignedIn={isSignedIn}
           onRouteChange={this.onRouteChange}
         />
-        {route === "home" ? (
-          <div>
+        {route === "home"
+        ? <div>
             <Logo />
             <Rank
               name={this.state.user.name}
@@ -134,17 +134,20 @@ class App extends Component {
             />
             <FaceRecognition coordinates={box} imageUrl={imageUrl} />
           </div>
-        ) : route === "signin" ? (
-          <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
-        ) : (
-          <Register
-            loadUser={this.loadUser}
-            onRouteChange={this.onRouteChange}
-          />
-        )}
+          : (
+            route === 'signin'
+            ? <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
+            : (
+              route === 'signout'
+              ? <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
+              : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
+            )
+          )
+        }
       </div>
     );
   }
 }
 
 export default App;
+
