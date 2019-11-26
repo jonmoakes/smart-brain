@@ -5,14 +5,9 @@ import Logo from "./components/Logo/Logo";
 import Rank from "./components/Rank/Rank";
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import Particles from "react-particles-js";
-import Clarifai from "clarifai";
 import "./App.css";
 import Signin from "./components/Signin/Signin";
 import Register from "./components/Register/Register";
-
-const app = new Clarifai.App({
-  apiKey: "b602577a85ef49cdbe6b4be98f108bce"
-});
 
 const particlesOptions = {
   particles: {
@@ -74,7 +69,6 @@ class App extends Component {
   };
 
   displayFaceBox = coordinates => {
-    console.log(coordinates);
     this.setState({ box: coordinates }); // set the state of the box in the constructor to equal the coordinates
   };
 
@@ -84,8 +78,14 @@ class App extends Component {
 
   onButtonSubmit = () => {
     this.setState({ imageUrl: this.state.input }); // when button clicked, make the states imageurl to be whatever the text field input is. Note we don't try and set it to imageurl because of the way set state works - The trap Andrei talked about.
-    app.models
-      .predict(Clarifai.FACE_DETECT_MODEL, this.state.input) // using the face detect model api, get the input ( which will be the image )
+      fetch("http://localhost:3000/imageurl", {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          input: this.state.input
+        })
+      })
+      .then(response => response.json())
       .then(response => {
         if (response) {
           fetch("http://localhost:3000/image", {
@@ -95,11 +95,11 @@ class App extends Component {
               id: this.state.user.id
             })
           })
-            .then(response => response.json())
-            .then(count => {
-              this.setState(Object.assign(this.state.user, { entries: count }));
-            })
-            .catch(console.log)
+          .then(response => response.json())
+          .then(count => {
+            this.setState(Object.assign(this.state.user, { entries: count }));
+          })
+          .catch(console.log)
         }
         this.displayFaceBox(this.calculateFaceLocation(response));
       }) // calculateFaceLocation takes a repsonse which returns the coordinates of the box. Then the returned object goes into the displayFaceLocation function.
