@@ -78,7 +78,7 @@ class App extends Component {
 
   onButtonSubmit = () => {
     this.setState({ imageUrl: this.state.input }); // when button clicked, make the states imageurl to be whatever the text field input is. Note we don't try and set it to imageurl because of the way set state works - The trap Andrei talked about.
-      fetch("https://desolate-beach-47400.herokuapp.com/imageurl", {
+      fetch("https://lit-crag-86842.herokuapp.com/imageurl", {
         method: "post",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -88,7 +88,7 @@ class App extends Component {
       .then(response => response.json())
       .then(response => {
         if (response) {
-          fetch("https://desolate-beach-47400.herokuapp.com/image", {
+          fetch("https://lit-crag-86842.herokuapp.com/image", {
             method: "put",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
